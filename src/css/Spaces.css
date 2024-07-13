@@ -1,0 +1,160 @@
+/* Spaces.css */
+
+.form-groupspace {
+  display: flex;
+  flex-wrap: nowrap; /* Ensure items are in a single row */
+  gap: 20px; /* Adjust the gap between items */
+  margin-bottom: 20px;
+  align-items: flex-start;
+  overflow-x: auto; /* Enable horizontal scroll */
+  overflow-y: hidden; /* Hide vertical scroll */
+  white-space: nowrap; /* Prevent items from wrapping */
+}
+.form-groupspace.scrollable {
+  max-height: 500px; /* Adjust this height as needed */
+  overflow-y: auto;
+}
+
+.space-item {
+  flex: 1 1 calc(50% - 20px); /* Adjust the width as needed */
+  max-width: calc(50% - 20px);
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #FAF1F1;
+  border-radius: 5px;
+  background-color: #FAF1F1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.form-control-file {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.image-preview {
+  margin-top: 10px;
+  position: relative;
+}
+
+.image-preview img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 5px;
+}
+
+.image-preview button {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: #f00;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.image-placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px; /* Adjust height as needed */
+  border: 1px dashed #ccc;
+  border-radius: 5px;
+  width: 400px; /* Adjust width as needed */
+  background-color: white;
+  overflow: hidden;
+  margin-bottom: 2rem; /* Prevent image from going outside */
+}
+
+.image-placeholder span {
+  color: #666;
+}
+
+.space-details {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.spacelabel {
+  margin-top: -2rem;
+  margin-bottom: 10px;
+  font-size: x-large !important;
+}
+
+.add-space-btn-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.add-space-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  background-color: #6eb73d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.add-space-btn:hover {
+  background-color: #5aa32c;
+}
+
+.remove-point-btn {
+  background: none;
+  border: none;
+  color: #ff0000;
+  cursor: pointer;
+  padding: 0;
+}
+
+.point-input {
+  flex: 1;
+}.input-with-icon {
+  display: flex;
+  align-items: center;
+}
+
+.input-with-icon .form-control {
+  flex: 1;
+  margin-bottom: 2px;
+}
+
+.input-with-icon .remove-point-btn {
+  background: none;
+  border: none;
+  color: #ff0000;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 5px; /* Adjust spacing as needed */
+}
+
+.remove-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.add-point-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 8px;
+}
+.meallabel{
+  color: rgb(49, 48, 48);
+}

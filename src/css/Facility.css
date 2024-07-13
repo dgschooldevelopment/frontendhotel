@@ -1,0 +1,94 @@
+/* Facility.css */
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.FacilityLabel {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  display: block;
+  color: black;
+  margin-left: -24rem;
+}
+
+.facility-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.form-check1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.3s, background-color 0.3s;
+  text-align: center;
+  position: relative;
+  height: 90px;
+  width: 90px;
+}
+
+.form-check1.selected {
+  border-color: #795548 !important;
+  background-color: #eaebeb17;
+}
+
+.form-check1:hover {
+  border-color: #ccc; /* Example hover border color */
+}
+
+.form-check1.selected .facility-icon {
+  color: #070707; /* Color when selected */
+}
+
+.form-check1.selected .facility-icon-container {
+  color: #8467d1; /* Color when selected */
+}
+
+.custom-facility {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.custom-facility input[type="text"] {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.custom-facility button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  padding: 8px 15px;
+  border-radius: 4px;
+}
+
+.custom-facility button:hover {
+  background-color: #0056b3;
+}
+
+.facilityname{
+  font-size: 16px;
+
+  margin-bottom: 10px;
+  display: block;
+  color: black;
+  
+}.facility-icon {
+  color: #555;
+  font-size: 24px;
+}
+
+.form-check1.selected .facility-icon {
+  color:#007bff; /* New color when selected */
+}

@@ -1,0 +1,66 @@
+/* PolicyRulesForm.css */
+
+.form-group {
+    margin-bottom: 20px;
+  }
+  
+  .policy-rule,
+  .home-rule {
+    margin-bottom: 10px;
+
+  }
+  
+  .input-group {
+    position: relative;
+  }
+  
+  .input-group-append {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  
+  .btn-primary {
+    margin-top: 10px;
+  }
+  
+  .policyrule {
+    left: -21rem;
+    font-size: 1.3rem;
+    color: black;
+    top: auto;
+  }.policyrule {
+    left: -21rem;
+    font-size: 1.3rem;
+    color: black;
+    margin-left: -64rem;
+  }
+  
+  .policy-rule {
+    margin-bottom: 10px;
+  
+  }
+  
+  .input-group {
+    position: relative;
+  }
+  
+  .input-group-append {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  
+  .btn-primary {
+    margin-top: 10px;
+  }
+  
+  .btn-outline-secondary {
+    color: #6c757d; /* Adjust icon color */
+  }
+  
+  .btn-outline-secondary:hover {
+    color: #343a40; /* Adjust icon color on hover */
+  }
+  
+  

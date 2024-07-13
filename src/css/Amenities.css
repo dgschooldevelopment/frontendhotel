@@ -1,0 +1,86 @@
+.form-group {
+  margin-bottom: 20px;
+}
+
+.Amenitieslabel {
+  font-weight: bold;
+  margin-bottom: 10px;
+  display: block;
+  font-size: 22.5px;
+  color: black;
+  position: relative;
+  left: -5rem;
+  top: -1rem;
+}
+
+.amenities-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 3rem;
+}
+
+.form-check {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Center content vertically */
+  gap: 10px;
+  padding: 10px;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.3s, background-color 0.3s;
+  text-align: center;
+  position: relative;
+  height: 90px;
+  width: 90px;
+}
+
+.form-check.selected {
+  border-color: #795548 !important;
+  background-color: #eaebeb17;
+  height: 90px;
+    width: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.amenity-icon-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 5px;
+  transition: border-color 0.3s;
+  
+}
+
+.amenity-icon {
+  font-size: 24px;
+  transition: color 0.3s;
+}
+
+.animTitle{
+  text-wrap: nowrap;
+}
+
+/* .form-check.selected {
+  border: 2px solid #020203 !important;
+} */
+
+.form-check.selected .amenity-icon {
+  color: #007bff !important;
+}
+
+.form-check-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.form-check-input {
+  display: none;
+}

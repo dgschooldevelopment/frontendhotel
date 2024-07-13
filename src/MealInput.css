@@ -1,0 +1,47 @@
+/* Styles for MealInput component */
+.meal {
+    margin-bottom: 20px;
+  }
+  
+  .meal input,
+  .meal textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 2rem;
+  }
+  
+  .meal button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .meal button:hover {
+    background-color: #45a049;
+  }
+  
+  /* Optional: Adjust styles for individual fields */
+  .meal input[type="text"],
+  .meal input[type="text"]:focus,
+  .meal textarea {
+    /* Add specific styles if needed */
+  }
+  
+  /* Optional: Adjust styles for specific button states */
+  .meal button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  

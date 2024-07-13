@@ -1,0 +1,121 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 4em;
+  padding: 0.0em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+.dropzone {
+  border: 2px dashed #ccc;
+  padding: 20px;
+  text-align: center;
+}
+
+.images-preview {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.images-preview img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+
+.facility {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+/* src/App.css */
+.App {
+  text-align: center;
+  background-color: #f0f2f5;
+  min-height: 100vh;
+  /*display: flex;*/
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 70rem
+}
+.App {
+  padding: 20px;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color:#fbfbfb;;
+  padding: 10px 20px;
+}
+
+.left-logo img {
+  height: 40px; /* Adjust height as needed */
+}
+
+.middle-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  border-radius: 5px;
+}
+
+.middle-content button {
+  margin: 0 10px;
+  padding: 8px 16px;
+  font-size: 18px;
+  background-color: #ebf0f5;
+  color: rgb(14, 10, 10);
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  height: 4rem;
+
+}
+
+.right-content button {
+  padding: 8px 16px;
+  font-size: 14px;
+  background-color: #28a745;
+  color: rgb(11, 10, 10);
+  border: none;
+  cursor: pointer;
+}

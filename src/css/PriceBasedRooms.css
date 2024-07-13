@@ -1,0 +1,103 @@
+.price-rooms-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center; /* Center items horizontally */
+    align-items: center; /* Center items vertically */
+  }
+  
+  .price-section {
+    width: 100%; /* Adjust width as needed */
+    max-width: 600px; /* Example max-width */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center items horizontally */
+    background: linear-gradient(to bottom, #ffb0b0, #a9a8e0); /* Linear gradient */
+  }
+  
+  .price-section label {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .price-section div {
+    width: 100%;
+    display: block;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .price-section input {
+    flex: 1;
+    padding: 8px;
+    margin-left: 10px; /* Adjust spacing between inputs */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .add-room-btn {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    background-color: #007bff;
+    color: #fff;
+    margin-top: 10px;
+  }
+  
+  .add-room-btn:hover {
+    opacity: 0.9;
+  }
+  
+  .villasprice {
+    background-color: white !important;
+    width: 100%;
+    height: 2rem;
+    text-align: center;
+    border-radius: 5px;
+    margin: 10px auto;
+    display: flex;
+    align-items: center; /* Center text vertically */
+    justify-content: center; /* Center text horizontally */
+    font-size: 14px;
+    font-weight: bold;
+    color: black;
+  }
+  
+  .add-room-form {
+    display: flex;
+    align-items: center;
+  }
+  
+  .add-room-form input {
+    flex: 1;
+    padding: 8px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 0.9rem;
+    width: 80%;
+  }
+  
+  .add-room-form button {
+    padding: 10px;
+    font-size: 14px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    background-color: #007bff;
+    color: #fff;
+    width: 84%;
+   
+  }
+  
