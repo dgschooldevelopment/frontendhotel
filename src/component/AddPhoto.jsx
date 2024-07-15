@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '../css/AddPhoto.css';
 
-const AddPhoto = () => {
-    const [images, setImages] = useState([null, null, null]);
-
+const AddPhoto = ({ images, setImages }) => {
     const handleImageChange = (e, index) => {
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
                 const newImages = [...images];
-                newImages[index] = reader.result;
+                newImages[index] = {
+                    image_data: reader.result,
+                    description: `Image ${index + 1}`,
+                };
                 setImages(newImages);
             };
             reader.onerror = (error) => {
@@ -45,7 +46,7 @@ const AddPhoto = () => {
             cursor: 'pointer',
             backgroundColor: '#fff',
             borderRadius: '10px',
-            overflow: 'hidden', // Ensure images fit within the box
+            overflow: 'hidden',
         },
         uploadLabel: {
             display: 'flex',
@@ -81,29 +82,26 @@ const AddPhoto = () => {
             cursor: 'pointer',
             backgroundColor: '#fff',
             borderRadius: '10px',
-            overflow: 'hidden', // Ensure images fit within the box
+            overflow: 'hidden',
         },
         label: {
             display: 'block',
             pointerEvents: 'auto',
-        },
+        }
     };
 
     return (
         <div style={styles.container}>
-            {/* Breadcrumb or additional content can be added here */}
             <div className="leftContent">
                 <div className="breadcrumb">
                     Home {'>'} Goa {'>'} Casa Simoes - Candolim
                 </div>
             </div>
 
-            {/* Image uploader section */}
             <div style={styles.imageUploader}>
-                {/* Main upload box for primary image */}
                 <div style={styles.imageUploadBox}>
                     {images[0] ? (
-                        <img src={images[0]} alt="Selected" style={styles.uploadedImage} />
+                        <img src={images[0].image_data} alt="Selected" style={styles.uploadedImage} />
                     ) : (
                         <label style={styles.uploadLabel}>
                             Add Photo +
@@ -117,12 +115,11 @@ const AddPhoto = () => {
                     )}
                 </div>
 
-                {/* Additional photo boxes for more images */}
                 <div style={styles.additionalPhotos}>
                     {images.slice(1).map((image, index) => (
                         <div style={styles.additionalPhotoBox} key={index + 1}>
                             {image ? (
-                                <img src={image} alt="Selected" style={styles.uploadedImage} />
+                                <img src={image.image_data} alt="Selected" style={styles.uploadedImage} />
                             ) : (
                                 <label style={styles.uploadLabel}>
                                     Add More Photos

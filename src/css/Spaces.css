@@ -79,8 +79,10 @@
 
 .spacelabel {
   margin-top: -2rem;
+  color: black;
   margin-bottom: 10px;
   font-size: x-large !important;
+  margin-left: -69rem;
 }
 
 .add-space-btn-container {

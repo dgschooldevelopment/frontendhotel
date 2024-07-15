@@ -1,49 +1,60 @@
-// HotelForm.jsx
-
-import React, { useState } from 'react';
-import '../css/HotelForm.css';
+import React, { useState, useRef, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons'; // Importing close icon
+import '../css/MealInput.css';
 import Amenities from './Amenities';
 import PriceBasedRooms from './PriceBasedRooms';
 import OfferForm from './OfferForm';
 import Spaces from './Spaces';
 import Facility from './Facility';
-import MealInput from './MealInput';
 import LocationDisplay from './LocationDisplay';
 import PolicyRulesForm from './PolicyRulesForm';
 import Faq from './Faq';
-import AddPhoto from './AddPhoto'; // Import AddPhoto component
+import AddPhoto from './AddPhoto';
+import MealInput from './MealInput'; // Import MealInput component
 
 function HotelForm() {
+  const initialAmenitiesState = {
+    swimmingPool: false,
+    garden: false,
+    beachView: false,
+    mealsAvailable: false,
+    wifi: false,
+    // Add more amenities as needed
+  };
+
   const [villaData, setVillaData] = useState({
     name: '',
-    address: '',
     maxGuests: '',
     availableVillas: '',
-    amenities: {
-      swimmingPool: false,
-      garden: false,
-      beachView: false,
-      mealsAvailable: false,
-      wifi: false,
-    },
-    offers: [],
+    address: '',
     description: '',
-    spaces: [{ photo: '', details: '', location: '' }],
-    location: '', // Ensure location state is managed correctly
+    location: '',
+    amenities: initialAmenitiesState,
     policyRules: [],
     homeRules: [],
-    faqs: [],
-    images: [null, null, null], // State for images
+    offers: [],
+    meals: [], // Initialize meals array
+    hotelImages: [],
+    frontImages: [null, null, null],
+    latitude: '',
+    longitude: '',
   });
 
   const [villaFacilities, setVillaFacilities] = useState({
     parking: false,
     gym: false,
     spa: false,
-    // Add more facilities as needed
   });
 
   const [priceRooms, setPriceRooms] = useState([]);
+
+  const handleImageChange = (newImages) => {
+    setVillaData((prevState) => ({
+      ...prevState,
+      frontImages: newImages,
+    }));
+  };
 
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -84,20 +95,18 @@ function HotelForm() {
     }));
   };
 
+ 
   const addSpace = () => {
     setVillaData((prevState) => ({
       ...prevState,
-      spaces: [
-        ...prevState.spaces,
-        { photo: '', details: '', location: '' },
-      ],
+      hotelImages: [...prevState.hotelImages, { image_description: '', image: '', image_url: '' }],
     }));
   };
 
   const updateSpace = (index, name, value) => {
     setVillaData((prevState) => ({
       ...prevState,
-      spaces: prevState.spaces.map((space, i) =>
+      hotelImages: prevState.hotelImages.map((space, i) =>
         i === index ? { ...space, [name]: value } : space
       ),
     }));
@@ -106,10 +115,9 @@ function HotelForm() {
   const removeSpace = (index) => {
     setVillaData((prevState) => ({
       ...prevState,
-      spaces: prevState.spaces.filter((space, i) => i !== index),
+      hotelImages: prevState.hotelImages.filter((space, i) => i !== index),
     }));
   };
-
   const handlePolicyRuleChange = (event, index) => {
     const newPolicyRules = [...villaData.policyRules];
     newPolicyRules[index] = event.target.value;
@@ -190,13 +198,44 @@ function HotelForm() {
     event.preventDefault();
     console.log('Villa data:', villaData);
 
+    const transformedData = {
+      name: villaData.name,
+      total_no_of_guests: villaData.maxGuests,
+      total_no_of_rooms: villaData.availableVillas,
+      type_of_accommodation: 'villa',
+      location: villaData.address,
+      about: villaData.description,
+  
+      price_per_room: priceRooms,
+      amenities: villaData.amenities,
+      policy_rules: villaData.policyRules,
+      facilities: villaFacilities,
+      FAQ: villaData.faqs,
+      home_rules_and_truths: villaData.homeRules,
+      offers: villaData.offers,
+      meals: villaData.meals.map((meal, index) => ({
+        meal_name:meal.meal_name,
+        meal_descriptions: meal.meal_description,
+        image_data: meal.image_data,
+      })),
+      hotel_images: villaData.hotelImages.filter((image) => image !== null).map((image, index) => ({
+        image_url: image.url,
+        image_description: image.description,
+        image_data:image.image_data
+      })),
+      front_images: villaData.frontImages.filter((image) => image !== null).map((image, index) => ({
+        image_url: image.url,
+        image_description: image.description,
+      })),
+    };
+
     try {
       const response = await fetch('http://localhost:3001/hotel_insert', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(villaData),
+        body: JSON.stringify(transformedData),
       });
 
       if (!response.ok) {
@@ -205,26 +244,21 @@ function HotelForm() {
 
       const data = await response.json();
       console.log('Villa data submitted successfully:', data);
-      // Optionally, reset form state or navigate to another page upon successful submission
     } catch (error) {
       console.error('Error submitting villa data:', error.message);
-      // Handle error state or display an error message to the user
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <div className="container">
-        <AddPhoto
-          images={villaData.images}
-          setImages={(newImages) =>
-            setVillaData((prevState) => ({
-              ...prevState,
-              images: newImages,
-            }))
-          }
-        />
-
+        {/* AddPhoto component for uploading hotel images */}
+      
+            
+            <AddPhoto images={villaData.frontImages} setImages={handleImageChange} />
+     </div>
+    
+        {/* Villa Details Section */}
         <div className="row">
           <div className="col-md-6">
             <div className="form-group">
@@ -275,55 +309,78 @@ function HotelForm() {
             </div>
           </div>
           <div className="col-md-6">
-            <PriceBasedRooms
-              priceRooms={priceRooms}
-              setPriceRooms={setPriceRooms}
-            />
+            {/* Component for Price Based Rooms */}
+            <PriceBasedRooms priceRooms={priceRooms} setPriceRooms={setPriceRooms} />
           </div>
         </div>
 
+        {/* Spaces Component */}
+        
+
+        {/* Amenities Component */}
         <div className="row">
           <div className="col-md-6 offset-md-6">
-            <Amenities
-              amenities={villaData.amenities}
-              handleAmenityChange={handleAmenityChange}
-            />
+            <Amenities amenities={villaData.amenities} handleAmenityChange={handleAmenityChange} />
           </div>
         </div>
 
-        <OfferForm
-          offers={villaData.offers}
-          updateOffer={updateOffer}
-          addOffer={addOffer}
-        />
+        {/* OfferForm Component */}
+        <OfferForm offers={villaData.offers} updateOffer={updateOffer} addOffer={addOffer} />
 
+        {/* Facility Component */}
+        <div className="row">
+          <div className="col-md-6 offset-md-6">
+            <Facility facilities={villaFacilities} handleFacilityChange={handleFacilityChange} />
+          </div>
+        </div>
         <Spaces
-          spaces={villaData.spaces}
+          hotelImages={villaData.hotelImages}
           updateSpace={updateSpace}
           addSpace={addSpace}
           removeSpace={removeSpace}
         />
 
-        <div className="row">
-          <div className="col-md-6 offset-md-6">
-            <Facility
-              facilities={villaFacilities}
-              handleFacilityChange={handleFacilityChange}
-            />
-          </div>
-        </div>
-
+        {/* MealInput Component */}
         <MealInput
-          spaces={villaData.spaces}
-          updateSpace={updateSpace}
-          addSpace={addSpace}
-          removeSpace={removeSpace}
+          meals={villaData.meals}
+          updateMeal={(index, key, value) => {
+            const updatedMeals = [...villaData.meals];
+            updatedMeals[index] = {
+              ...updatedMeals[index],
+              [key]: value,
+            };
+            setVillaData((prevState) => ({
+              ...prevState,
+              meals: updatedMeals,
+            }));
+          }}
+          addMeal={() => {
+            setVillaData((prevState) => ({
+              ...prevState,
+              meals: [
+                ...prevState.meals,
+                {
+                
+                 image_data: '',
+                  meal_description: '',
+                },
+              ],
+            }));
+          }}
+          removeMeal={(index) => {
+            const updatedMeals = [...villaData.meals];
+            updatedMeals.splice(index, 1);
+            setVillaData((prevState) => ({
+              ...prevState,
+              meals: updatedMeals,
+            }));
+          }}
         />
 
-        {/* LocationDisplay component */}
-        <LocationDisplay location={villaData.location} />
+        {/* LocationDisplay Component */}
+        <LocationDisplay location={villaData.location} latitude={villaData.latitude} longitude={villaData.longitude} />
 
-        {/* Policy and Home Rules Form */}
+        {/* PolicyRulesForm Component */}
         <PolicyRulesForm
           policyRules={villaData.policyRules}
           homeRules={villaData.homeRules}
@@ -335,14 +392,10 @@ function HotelForm() {
           deleteHomeRule={deleteHomeRule}
         />
 
-        {/* FAQ Component */}
-        <Faq
-          faqs={villaData.faqs}
-          handleFAQChange={handleFAQChange}
-          addFAQ={addFAQ}
-          deleteFAQ={deleteFAQ}
-        />
+        {/* Faq Component */}
+        <Faq faqs={villaData.faqs} handleFAQChange={handleFAQChange} addFAQ={addFAQ} deleteFAQ={deleteFAQ} />
 
+        {/* Submit Button */}
         <div className="row">
           <div className="col-md-12">
             <button type="submit" className="btn">
@@ -350,7 +403,7 @@ function HotelForm() {
             </button>
           </div>
         </div>
-      </div>
+ 
     </form>
   );
 }

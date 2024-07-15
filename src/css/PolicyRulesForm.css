@@ -47,16 +47,17 @@
   
   .input-group-append {
     position: absolute;
-    right: 0;
-    top: 0;
-  }
+    right: 2px;
+    top: 17px;
+}
   
   .btn-primary {
     margin-top: 10px;
   }
   
   .btn-outline-secondary {
-    color: #6c757d; /* Adjust icon color */
+    color: #E91E63;
+    background-color: white; /* Adjust icon color */
   }
   
   .btn-outline-secondary:hover {

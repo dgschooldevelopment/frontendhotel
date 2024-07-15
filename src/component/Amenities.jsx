@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSwimmingPool, faTree, faUmbrellaBeach, faUtensils, faWifi } from '@fortawesome/free-solid-svg-icons';
 import '../css/Amenities.css';
@@ -11,6 +11,11 @@ const Amenities = ({ amenities, handleAmenityChange }) => {
       [name]: checked,
     });
   };
+
+  // useEffect to log amenities whenever it changes
+  useEffect(() => {
+    console.log('Updated Amenities:', amenities);
+  }, [amenities]);
 
   return (
     <div className="form-group">

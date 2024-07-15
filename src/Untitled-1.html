@@ -1,0 +1,662 @@
+import React, { useState } from 'react';
+import '../css/HotelForm.css';
+import Amenities from './Amenities';
+import PriceBasedRooms from './PriceBasedRooms';
+import OfferForm from './OfferForm';
+import Spaces from './Spaces';
+import Facility from './Facility';
+import MealInput from './MealInput';
+import LocationDisplay from './LocationDisplay';
+import PolicyRulesForm from './PolicyRulesForm';
+import Faq from './Faq';
+import AddPhoto from './AddPhoto';
+
+function HotelForm() {
+  const [villaData, setVillaData] = useState({
+    name: '',
+    address: '',
+    maxGuests: '',
+    availableVillas: '',
+    amenities: {
+      swimmingPool: false,
+      garden: false,
+      beachView: false,
+      mealsAvailable: false,
+      wifi: false,
+    },
+    offers: [],
+    description: '',
+    spaces: [{ photo: '', details: '', location: '' }],
+    location: '', 
+    policyRules: [],
+    homeRules: [],
+    faqs: [],
+    images: [null, null, null], 
+  });
+
+  const [villaFacilities, setVillaFacilities] = useState({
+    parking: false,
+    gym: false,
+    spa: false,
+  });
+
+  const [priceRooms, setPriceRooms] = useState([]);
+
+  const handleChange = (event) => {
+    const { name, value, type, checked } = event.target;
+    setVillaData((prevState) => ({
+      ...prevState,
+      [name]: type === 'checkbox' ? checked : value,
+    }));
+  };
+
+  const handleAmenityChange = (newAmenities) => {
+    setVillaData((prevState) => ({
+      ...prevState,
+      amenities: newAmenities,
+    }));
+  };
+
+  const handleFacilityChange = (event) => {
+    const { name, checked } = event.target;
+    setVillaFacilities((prevState) => ({
+      ...prevState,
+      [name]: checked,
+    }));
+  };
+
+  const addOffer = () => {
+    setVillaData((prevState) => ({
+      ...prevState,
+      offers: [...prevState.offers, { name: '', details: '' }],
+    }));
+  };
+
+  const updateOffer = (index, name, value) => {
+    setVillaData((prevState) => ({
+      ...prevState,
+      offers: prevState.offers.map((offer, i) =>
+        i === index ? { ...offer, [name]: value } : offer
+      ),
+    }));
+  };
+
+  const addSpace = () => {
+    setVillaData((prevState) => ({
+      ...prevState,
+      spaces: [
+        ...prevState.spaces,
+        { photo: '', details: '', location: '' },
+      ],
+    }));
+  };
+
+  const updateSpace = (index, name, value) => {
+    setVillaData((prevState) => ({
+      ...prevState,
+      spaces: prevState.spaces.map((space, i) =>
+        i === index ? { ...space, [name]: value } : space
+      ),
+    }));
+  };
+
+  const removeSpace = (index) => {
+    setVillaData((prevState) => ({
+      ...prevState,
+      spaces: prevState.spaces.filter((space, i) => i !== index),
+    }));
+  };
+
+  const handlePolicyRuleChange = (event, index) => {
+    const newPolicyRules = [...villaData.policyRules];
+    newPolicyRules[index] = event.target.value;
+    setVillaData((prevState) => ({
+      ...prevState,
+      policyRules: newPolicyRules,
+    }));
+  };
+
+  const handleHomeRuleChange = (event, index) => {
+    const newHomeRules = [...villaData.homeRules];
+    newHomeRules[index] = event.target.value;
+    setVillaData((prevState) => ({
+      ...prevState,
+      homeRules: newHomeRules,
+    }));
+  };
+
+  const addPolicyRule = () => {
+    setVillaData((prevState) => ({
+      ...prevState,
+      policyRules: [...prevState.policyRules, ''],
+    }));
+  };
+
+  const addHomeRule = () => {
+    setVillaData((prevState) => ({
+      ...prevState,
+      homeRules: [...prevState.homeRules, ''],
+    }));
+  };
+
+  const deletePolicyRule = (index) => {
+    const newPolicyRules = [...villaData.policyRules];
+    newPolicyRules.splice(index, 1);
+    setVillaData((prevState) => ({
+      ...prevState,
+      policyRules: newPolicyRules,
+    }));
+  };
+
+  const deleteHomeRule = (index) => {
+    const newHomeRules = [...villaData.homeRules];
+    newHomeRules.splice(index, 1);
+    setVillaData((prevState) => ({
+      ...prevState,
+      homeRules: newHomeRules,
+    }));
+  };
+
+  const handleFAQChange = (event, index) => {
+    const { name, value } = event.target;
+    const newFaqs = [...villaData.faqs];
+    newFaqs[index][name] = value;
+    setVillaData((prevState) => ({
+      ...prevState,
+      faqs: newFaqs,
+    }));
+  };
+
+  const addFAQ = () => {
+    setVillaData((prevState) => ({
+      ...prevState,
+      faqs: [...prevState.faqs, { question: '', answer: '' }],
+    }));
+  };
+
+  const deleteFAQ = (index) => {
+    const newFaqs = [...villaData.faqs];
+    newFaqs.splice(index, 1);
+    setVillaData((prevState) => ({
+      ...prevState,
+      faqs: newFaqs,
+    }));
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    console.log('Villa data:', villaData);
+
+    const transformedData = {
+      name: villaData.name,
+      total_no_of_guests: villaData.maxGuests,
+      total_no_of_rooms: villaData.availableVillas,
+      type_of_accommodation: 'villa', 
+      location: villaData.location,
+      price_per_room: priceRooms,
+      about: villaData.description,
+      amenities: villaData.amenities,
+      policy_rules: villaData.policyRules,
+      facilities: villaFacilities,
+      FAQ: villaData.faqs,
+      home_rules_and_truths: villaData.homeRules,
+      meals: villaData.spaces,
+      hotel_images: villaData.images.filter(image => image !== null).map((image, index) => ({
+        image_url: image.url,
+        image_description: image.description,
+      })),
+    };
+
+    try {
+      const response = await fetch('http://localhost:3001/hotel_insert', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(transformedData),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log('Villa data submitted successfully:', data);
+    } catch (error) {
+      console.error('Error submitting villa data:', error.message);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <div className="container">
+        <AddPhoto
+          images={villaData.images}
+          setImages={(newImages) =>
+            setVillaData((prevState) => ({
+              ...prevState,
+              images: newImages,
+            }))
+          }
+        />
+
+        <div className="row">
+          <div className="col-md-6">
+            <div className="form-group">
+              <input
+                type="text"
+                className="form-control plain-line-input"
+                id="name"
+                name="name"
+                placeholder="Villa Name"
+                value={villaData.name}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="form-group">
+              <input
+                type="text"
+                className="form-control plain-line-input"
+                id="address"
+                name="address"
+                placeholder="Address"
+                value={villaData.address}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="guestdata">
+              <div className="form-group">
+                <input
+                  type="number"
+                  className="form-control"
+                  id="maxGuests"
+                  name="maxGuests"
+                  placeholder="Maximum Guests"
+                  value={villaData.maxGuests}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="form-group">
+                <input
+                  type="text"
+                  className="form-control"
+                  id="availableVillas"
+                  name="availableVillas"
+                  placeholder="Add available villas and room +"
+                  value={villaData.availableVillas}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="col-md-6">
+            <PriceBasedRooms
+              priceRooms={priceRooms}
+              setPriceRooms={setPriceRooms}
+            />
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="col-md-6 offset-md-6">
+            <Amenities
+              amenities={villaData.amenities}
+              handleAmenityChange={handleAmenityChange}
+            />
+          </div>
+        </div>
+
+        <OfferForm
+          offers={villaData.offers}
+          updateOffer={updateOffer}
+          addOffer={addOffer}
+        />
+
+        <Spaces
+          spaces={villaData.spaces}
+          updateSpace={updateSpace}
+          addSpace={addSpace}
+          removeSpace={removeSpace}
+        />
+
+        <div className="row">
+          <div className="col-md-6 offset-md-6">
+            <Facility
+              facilities={villaFacilities}
+              handleFacilityChange={handleFacilityChange}
+            />
+          </div>
+        </div>
+
+        <MealInput
+          spaces={villaData.spaces}
+          updateSpace={updateSpace}
+          addSpace={addSpace}
+          removeSpace={removeSpace}
+        />
+
+        <LocationDisplay location={villaData.location} />
+
+        <PolicyRulesForm
+          policyRules={villaData.policyRules}
+          homeRules={villaData.homeRules}
+          handlePolicyRuleChange={handlePolicyRuleChange}
+          handleHomeRuleChange={handleHomeRuleChange}
+          addPolicyRule={addPolicyRule}
+          addHomeRule={addHomeRule}
+          deletePolicyRule={deletePolicyRule}
+          deleteHomeRule={deleteHomeRule}
+        />
+
+        <Faq
+          faqs={villaData.faqs}
+          handleFAQChange={handleFAQChange}
+          addFAQ={addFAQ}
+          deleteFAQ={deleteFAQ}
+        />
+
+        <div className="row">
+          <div className="col-md-12">
+            <button type="submit" className="btn">
+              Submit
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  );
+}
+
+export default HotelForm;
+////////////////////////////////////////////
+import React, { useState } from 'react';
+
+function App() {
+  // State for form fields
+  const [formData, setFormData] = useState({
+    name: '',
+    total_no_of_guests: '',
+    total_no_of_rooms: '',
+    type_of_accommodation: '',
+    location: '',
+    price_per_room: '',
+    about: '',
+    amenities: [],
+    policy_rules: {},
+    facilities: {},
+    FAQ: {},
+    home_rules_and_truths: {},
+    meals: [],
+    hotel_images: [],
+    front_images: [], // Array of objects for images
+    latitude: '',
+    longitude: ''
+  });
+
+  // Handle form submission
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      // Ensure front_images is an array of objects before sending
+      const formDataToSend = {
+        ...formData,
+        front_images: formData.front_images.map(image => ({ url: image.url, description: image.description }))
+      };
+
+      // Send formData to backend API for processing
+      const response = await fetch('http://localhost:3001/hotel_insert', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formDataToSend)
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to add hotel');
+      }
+
+      const data = await response.json();
+      console.log('Hotel added successfully:', data);
+      // Optionally reset form fields or show success message
+      setFormData({
+        name: '',
+        total_no_of_guests: '',
+        total_no_of_rooms: '',
+        type_of_accommodation: '',
+        location: '',
+        price_per_room: '',
+        about: '',
+        amenities: [],
+        policy_rules: {},
+        facilities: {},
+        FAQ: {},
+        home_rules_and_truths: {},
+        meals: [],
+        hotel_images: [],
+        front_images: [],
+        latitude: '',
+        longitude: ''
+      });
+    } catch (error) {
+      console.error('Error adding hotel:', error);
+      // Handle error: display error message to user
+    }
+  };
+
+  // Handle changes in form fields
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  };
+
+  // Handle changes in front_images array
+  const handleFrontImagesChange = (index, newValue) => {
+    const updatedImages = [...formData.front_images];
+    updatedImages[index] = newValue;
+
+    setFormData({
+      ...formData,
+      front_images: updatedImages
+    });
+  };
+
+  return (
+    <div className="App">
+      <header className="App-header">
+        <h1>Welcome to Your Hotel Management System</h1>
+      </header>
+      <main>
+        <form onSubmit={handleSubmit}>
+          {/* Hotel Name */}
+          <label>
+            Hotel Name:
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+          </label>
+
+          {/* Total Number of Guests */}
+          <label>
+            Total Number of Guests:
+            <input
+              type="text"
+              name="total_no_of_guests"
+              value={formData.total_no_of_guests}
+              onChange={handleChange}
+            />
+          </label>
+
+          {/* Total Number of Rooms */}
+          <label>
+            Total Number of Rooms:
+            <input
+              type="text"
+              name="total_no_of_rooms"
+              value={formData.total_no_of_rooms}
+              onChange={handleChange}
+            />
+          </label>
+
+          {/* Type of Accommodation */}
+          <label>
+            Type of Accommodation:
+            <input
+              type="text"
+              name="type_of_accommodation"
+              value={formData.type_of_accommodation}
+              onChange={handleChange}
+            />
+          </label>
+
+          {/* Location */}
+          <label>
+            Location:
+            <input
+              type="text"
+              name="location"
+              value={formData.location}
+              onChange={handleChange}
+            />
+          </label>
+
+          {/* Price per Room */}
+          <label>
+            Price per Room:
+            <input
+              type="text"
+              name="price_per_room"
+              value={formData.price_per_room}
+              onChange={handleChange}
+            />
+          </label>
+
+          {/* About */}
+          <label>
+            About:
+            <textarea
+              name="about"
+              value={formData.about}
+              onChange={handleChange}
+            />
+          </label>
+
+          {/* Amenities (as JSON) */}
+          <label>
+            Amenities (JSON):
+            <textarea
+              name="amenities"
+              value={JSON.stringify(formData.amenities)}
+              onChange={handleChange}
+            />
+          </label>
+
+          {/* Policy Rules (as JSON) */}
+          <label>
+            Policy Rules (JSON):
+            <textarea
+              name="policy_rules"
+              value={JSON.stringify(formData.policy_rules)}
+              onChange={handleChange}
+            />
+          </label>
+
+          {/* Facilities (as JSON) */}
+          <label>
+            Facilities (JSON):
+            <textarea
+              name="facilities"
+              value={JSON.stringify(formData.facilities)}
+              onChange={handleChange}
+            />
+          </label>
+
+          {/* FAQ (as JSON) */}
+          <label>
+            FAQ (JSON):
+            <textarea
+              name="FAQ"
+              value={JSON.stringify(formData.FAQ)}
+              onChange={handleChange}
+            />
+          </label>
+
+          {/* Home Rules and Truths (as JSON) */}
+          <label>
+            Home Rules and Truths (JSON):
+            <textarea
+              name="home_rules_and_truths"
+              value={JSON.stringify(formData.home_rules_and_truths)}
+              onChange={handleChange}
+            />
+          </label>
+
+          {/* Meals (Array of Objects) */}
+          <label>
+            Meals (Array of Objects):
+            <textarea
+              name="meals"
+              value={JSON.stringify(formData.meals)}
+              onChange={handleChange}
+            />
+          </label>
+
+          {/* Hotel Images (Array of Objects) */}
+          <label>
+            Hotel Images (Array of Objects):
+            <textarea
+              name="hotel_images"
+              value={JSON.stringify(formData.hotel_images)}
+              onChange={handleChange}
+            />
+          </label>
+
+          {/* Front Images (Array of Objects) */}
+          <label>
+            Front Images (Array of Objects):
+            <textarea
+              name="front_images"
+              value={JSON.stringify(formData.front_images)}
+              onChange={handleChange}
+            />
+          </label>
+
+          {/* Latitude */}
+          <label>
+            Latitude:
+            <input
+              type="text"
+              name="latitude"
+              value={formData.latitude}
+              onChange={handleChange}
+            />
+          </label>
+
+          {/* Longitude */}
+          <label>
+            Longitude:
+            <input
+              type="text"
+              name="longitude"
+              value={formData.longitude}
+              onChange={handleChange}
+            />
+          </label>
+
+          <button type="submit">Add Hotel</button>
+        </form>
+      </main>
+    </div>
+  );
+}
+
+export default App;

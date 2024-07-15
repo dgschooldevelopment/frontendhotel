@@ -1,52 +1,64 @@
-
 import React, { useRef, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons'; // Importing close icon
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import '../css/Spaces.css';
 
-const Spaces = ({ spaces, updateSpace, addSpace, removeSpace }) => {
+const Spaces = ({ hotelImages, updateSpace, addSpace, removeSpace }) => {
   const fileInputRefs = useRef([]);
 
   useEffect(() => {
     // Ensure each space has at least one point by default
-    spaces.forEach((space, index) => {
-      if (Object.keys(space).filter(key => key.startsWith('point')).length === 0) {
+    hotelImages.forEach((_, index) => {
+      if (Object.keys(hotelImages[index]).filter(key => key.startsWith('point')).length === 0) {
         updateSpace(index, 'point1', ''); // Add default point
       }
     });
-  }, [spaces, updateSpace]);
+  }, [hotelImages, updateSpace]);
+
+  useEffect(() => {
+    // Add a default space if there are no spaces
+    if (hotelImages.length === 0) {
+      addSpace();
+    }
+  }, [hotelImages, addSpace]);
 
   const handleFileChange = (index, e) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        updateSpace(index, 'photo', file);
-        updateSpace(index, 'photoPreview', reader.result); // Save the image preview URL
+        updateSpace(index, 'image_data', reader.result); // Save base64 encoded image data
       };
       reader.readAsDataURL(file);
     }
   };
 
   const handleRemoveImage = (index) => {
-    updateSpace(index, 'photo', null); // Clear the photo
-    updateSpace(index, 'photoPreview', ''); // Clear the photo preview URL
+    updateSpace(index, 'image_data', null); // Clear the image data
+  };
+
+  const handleCaptionChange = (index, value) => {
+    updateSpace(index, 'image_description.caption', value); // Update image caption
+  };
+
+  const handleLocationChange = (index, value) => {
+    updateSpace(index, 'image_description.location', value); // Update image location
   };
 
   const handlePointChange = (index, pointIndex, value) => {
-    updateSpace(index, `point${pointIndex}`, value); // Update space point based on index
+    updateSpace(index, `point${pointIndex}`, value); // Update point
   };
 
   const addPoint = (index) => {
-    const nextPointIndex = Object.keys(spaces[index]).filter(key => key.startsWith('point')).length + 1;
+    const nextPointIndex = Object.keys(hotelImages[index]).filter(key => key.startsWith('point')).length + 1;
     updateSpace(index, `point${nextPointIndex}`, ''); // Initialize new point with empty string
   };
 
   const removePoint = (index, pointIndex) => {
     // Only remove the point if there are more than one points
-    const points = Object.keys(spaces[index]).filter(key => key.startsWith('point'));
+    const points = Object.keys(hotelImages[index]).filter(key => key.startsWith('point'));
     if (points.length > 1) {
-      const updatedSpace = { ...spaces[index] };
+      const updatedSpace = { ...hotelImages[index] };
       delete updatedSpace[`point${pointIndex}`];
       updateSpace(index, updatedSpace); // Update space state with the modified space object
     }
@@ -55,10 +67,11 @@ const Spaces = ({ spaces, updateSpace, addSpace, removeSpace }) => {
   return (
     <div>
       <div className="spacelabel">
-        <label>Spaces:</label>
+        {/* Optional: Label for the Spaces section */}
+        Space
       </div>
-      <div className={`form-groupspace ${spaces.length > 2 ? 'scrollable' : ''}`}>
-        {spaces.map((space, index) => (
+      <div className={`form-groupspace ${hotelImages.length > 2 ? 'scrollable' : ''}`}>
+        {hotelImages.map((space, index) => (
           <div key={index} className="space-item">
             <div className="form-group">
               <input
@@ -72,11 +85,11 @@ const Spaces = ({ spaces, updateSpace, addSpace, removeSpace }) => {
                 className="image-placeholder"
                 onClick={() => fileInputRefs.current[index].click()}
               >
-                {space.photoPreview ? (
+                {space.image_data ? (
                   <div className="image-preview">
-                    <img src={space.photoPreview} alt="Space Preview" />
+                    <img src={space.image_data} alt={`Space ${index + 1}`} />
                     <button type="button" onClick={() => handleRemoveImage(index)}>
-                      <FontAwesomeIcon icon={faTimes} /> {/* Using close icon */}
+                      <FontAwesomeIcon icon={faTimes} />
                     </button>
                   </div>
                 ) : (
@@ -85,6 +98,7 @@ const Spaces = ({ spaces, updateSpace, addSpace, removeSpace }) => {
               </div>
             </div>
             <div className="space-details">
+             
               <ul>
                 {Object.keys(space)
                   .filter(key => key.startsWith('point'))
@@ -103,7 +117,7 @@ const Spaces = ({ spaces, updateSpace, addSpace, removeSpace }) => {
                           className="remove-point-btn remove-btn"
                           onClick={() => removePoint(index, parseInt(key.slice(5)))}
                         >
-                          <FontAwesomeIcon icon={faTimes} /> {/* Using close icon */}
+                          <FontAwesomeIcon icon={faTimes} />
                         </button>
                       </div>
                     </li>
@@ -111,7 +125,7 @@ const Spaces = ({ spaces, updateSpace, addSpace, removeSpace }) => {
               </ul>
               <button type="button" className="add-point-btn" onClick={() => addPoint(index)}>Add Point</button>
             </div>
-            {spaces.length > 1 && (
+            {hotelImages.length > 1 && (
               <button type="button" className="remove-btn" onClick={() => removeSpace(index)}>
                 Remove
               </button>
