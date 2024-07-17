@@ -1,63 +1,66 @@
-import React, { useState } from 'react';
 
-const Faq = () => {
-  const [faqs, setFaqs] = useState([
-    { question: '', answer: '' } // Initial empty FAQ entry
-  ]);
+import React from 'react';
+import PropTypes from 'prop-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import '../css/PolicyRulesForm.css'; // Import the CSS file
 
-  const handleQuestionChange = (event, index) => {
-    const newFaqs = [...faqs];
-    newFaqs[index].question = event.target.value;
-    setFaqs(newFaqs);
+function Faq({ faq = { question: '', answer: '' }, index, onChange, onDelete, showDeleteButton = true, canDelete = true }) {
+  const handleInputChange = (event) => {
+    onChange(event, index);
   };
 
-  const handleAnswerChange = (event, index) => {
-    const newFaqs = [...faqs];
-    newFaqs[index].answer = event.target.value;
-    setFaqs(newFaqs);
-  };
-
-  const addFAQ = () => {
-    setFaqs([...faqs, { question: '', answer: '' }]);
-  };
-
-  const deleteFAQ = (index) => {
-    const newFaqs = [...faqs];
-    newFaqs.splice(index, 1);
-    setFaqs(newFaqs);
+  const handleDelete = () => {
+    if (canDelete) {
+      onDelete(index);
+    }
   };
 
   return (
-    <div>
-      {faqs.map((faq, index) => (
-        <div key={index} className="form-group">
-          <input
-            type="text"
-            className="form-control"
-            placeholder={`Question ${index + 1}`}
-            value={faq.question}
-            onChange={(e) => handleQuestionChange(e, index)}
-          />
-          <textarea
-            className="form-control"
-            placeholder="Answer"
-            value={faq.answer}
-            onChange={(e) => handleAnswerChange(e, index)}
-          ></textarea>
+    <div className="faq-container">
+      <label className='faqlabel'>FAQs</label>
+      <div className="faqitem">
+        <label className='faqname'>Add Questions ?</label>
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Question"
+          name="question"
+          value={faq.question}
+          onChange={handleInputChange}
+        />
+        <textarea
+          className="form-control"
+          placeholder="Answer"
+          name="answer"
+          value={faq.answer}
+          onChange={handleInputChange}
+        />
+        {showDeleteButton && (
           <button
             type="button"
-            className="btn btn-outline-danger"
-            onClick={() => deleteFAQ(index)}
+            className={`btn btn-outline-danger btn-delete-faq ${canDelete ? '' : 'disabled'}`}
+            onClick={handleDelete} // Use the onDelete function passed as prop conditionally
+            disabled={!canDelete}
           >
-            Delete FAQ
+            <FontAwesomeIcon icon={faTimes} />
           </button>
-        </div>
-      ))}
-      <button type="button" className="btn btn-primary" onClick={addFAQ}>
-        Add FAQ
-      </button>
+        )}
+      </div>
     </div>
   );
+}
+
+Faq.propTypes = {
+  faq: PropTypes.shape({
+    question: PropTypes.string,
+    answer: PropTypes.string,
+  }),
+  index: PropTypes.number.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  showDeleteButton: PropTypes.bool, // Prop to conditionally show the delete button
+  canDelete: PropTypes.bool, // Prop to conditionally allow deletion
 };
 
 export default Faq;

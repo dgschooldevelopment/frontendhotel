@@ -44,7 +44,7 @@ const PriceBasedRooms = ({ priceRooms, setPriceRooms }) => {
         <div className="add-room-form">
           <input
             type="text"
-            placeholder="New Room Type"
+            placeholder="Add villas prices +"
             value={newRoomType}
             onChange={(e) => setNewRoomType(e.target.value)}
           />

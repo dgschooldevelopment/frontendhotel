@@ -9,15 +9,15 @@
   font-size: 22.5px;
   color: black;
   position: relative;
-  left: -5rem;
-  top: -1rem;
+  left: -10rem;
+  /*top: -1rem;*/
 }
 
 .amenities-row {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-top: 3rem;
+ /* margin-top: 3rem;*/
 }
 
 .form-check {

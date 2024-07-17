@@ -24,18 +24,20 @@
     margin-top: 10px;
   }
   
-  .policyrule {
+  /*.policyrule {
     left: -21rem;
     font-size: 1.3rem;
     color: black;
     top: auto;
-  }.policyrule {
-    left: -21rem;
-    font-size: 1.3rem;
+  }*/
+  .policyrule {
+   left: -21rem;
+    font-size: 1.2rem;
     color: black;
-    margin-left: -64rem;
-  }
-  
+    margin-left: -67rem;
+    margin-top: 5px;
+    font-weight: 700;
+}
   .policy-rule {
     margin-bottom: 10px;
   
@@ -56,7 +58,7 @@
   }
   
   .btn-outline-secondary {
-    color: #E91E63;
+    color: #080808;
     background-color: white; /* Adjust icon color */
   }
   
@@ -64,4 +66,64 @@
     color: #343a40; /* Adjust icon color on hover */
   }
   
+  .faq-container {
+    margin-bottom: 20px; /* Adjust margin as needed */
+  }
+  
+  .faqlabel {
+    display: block;
+    font-size: 18px; /* Adjust font size as needed */
+    font-weight: bold;
+    color: black; /* Set label color to black */
+    margin-bottom: 10px;
+    margin-left: -70rem; /* Adjust margin as needed */
+  }
+  
+  .faqitem {
+    position: relative;
+    padding: 20px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+  }
+  
+  .faqname {
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: block;
+    color: black; /* Set label color to black */
+  }
+  
+  .faqitem .btn-delete-faq {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+  }
+  
+  .faqitem .form-control {
+    margin-bottom: 10px;
+  }
+  
+  .btn-add-faq {
+    margin-bottom: 10px; /* Adjust spacing below the Add FAQ button if needed */
+  }
+  
+  .btn-outline-danger {
+    /* Customize outline-danger button styles here */
+  }
+  
+  .btn-outline-danger:hover {
+    background-color: #ff4d4d;
+    border-color: #ff4d4d;
+    color: white;
+  }
+  
+  .btn-outline-danger:focus {
+    box-shadow: none;
+  }
+  
+  .btn-outline-danger:active {
+    background-color: #ff1a1a;
+    border-color: #ff1a1a;
+    color: white;
+  }
   

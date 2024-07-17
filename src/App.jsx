@@ -14,10 +14,10 @@ function App() {
                 <div className='left-content'>
                     <img src="src/assets/image 14.png" alt="Logo" className="logo" />
                 </div>
-                <div className='middle-content'>
+               {/* <div className='middle-content'>
                     <button className="nav-button">Casa Simoes z..  |  Select Date |  2 Guests</button>
                     
-                </div>
+                </div>*/}
                 <div className='right-content'>
                 <button className="nav-button" style={{ borderRadius: '3px',backgroundColor:'white',border:'1px solid black' }}>Need Help ?</button>
                 </div>

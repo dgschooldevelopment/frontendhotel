@@ -19,34 +19,36 @@ const PolicyRulesForm = ({
         <label htmlFor="policyRules" className="policyrule">
           Policy Rules:
         </label>
-        {/* Display the default "1 point" rule if policyRules is empty */}
-        {policyRules.length === 0 && (
-          <div className="policy-rule">
-            <div className="input-group mb-3">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Policy Rule 1"
-                readOnly
-              />
+        {/* Always display at least one input field for Policy Rules */}
+        <div className="policy-rule">
+          <div className="input-group mb-3">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Policy Rule 1"
+              value={policyRules.length > 0 ? policyRules[0] : ''}
+              onChange={(e) => handlePolicyRuleChange(e, 0)}
+            />
+            <div className="input-group-append">
+              
             </div>
           </div>
-        )}
-        {policyRules.map((rule, index) => (
+        </div>
+        {policyRules.slice(1).map((rule, index) => (
           <div key={index} className="policy-rule">
             <div className="input-group mb-3">
               <input
                 type="text"
                 className="form-control"
-                placeholder={`Policy Rule ${index + 1}`}
+                placeholder={`Policy Rule ${index + 2}`}
                 value={rule}
-                onChange={(e) => handlePolicyRuleChange(e, index)}
+                onChange={(e) => handlePolicyRuleChange(e, index + 1)}
               />
               <div className="input-group-append">
                 <button
                   className="btn btn-outline-secondary"
                   type="button"
-                  onClick={() => deletePolicyRule(index)}
+                  onClick={() => deletePolicyRule(index + 1)}
                 >
                   <FontAwesomeIcon icon={faTrashAlt} />
                 </button>
@@ -63,34 +65,36 @@ const PolicyRulesForm = ({
         <label htmlFor="homeRules" className="policyrule">
           Home Rules:
         </label>
-        {/* Display the default "1 point" rule if homeRules is empty */}
-        {homeRules.length === 0 && (
-          <div className="home-rule">
-            <div className="input-group mb-3">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Home Rule 1"
-                readOnly
-              />
+        {/* Always display at least one input field for Home Rules */}
+        <div className="home-rule">
+          <div className="input-group mb-3">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Home Rule 1"
+              value={homeRules.length > 0 ? homeRules[0] : ''}
+              onChange={(e) => handleHomeRuleChange(e, 0)}
+            />
+            <div className="input-group-append">
+             
             </div>
           </div>
-        )}
-        {homeRules.map((rule, index) => (
+        </div>
+        {homeRules.slice(1).map((rule, index) => (
           <div key={index} className="home-rule">
             <div className="input-group mb-3">
               <input
                 type="text"
                 className="form-control"
-                placeholder={`Home Rule ${index + 1}`}
+                placeholder={`Home Rule ${index + 2}`}
                 value={rule}
-                onChange={(e) => handleHomeRuleChange(e, index)}
+                onChange={(e) => handleHomeRuleChange(e, index + 1)}
               />
               <div className="input-group-append">
                 <button
                   className="btn btn-outline-secondary"
                   type="button"
-                  onClick={() => deleteHomeRule(index)}
+                  onClick={() => deleteHomeRule(index + 1)}
                 >
                   <FontAwesomeIcon icon={faTrashAlt} />
                 </button>

@@ -1,3 +1,6 @@
+/* styles.css */
+
+/* General styles */
 .imageUploader {
     display: flex;
     flex-direction: row;
@@ -7,14 +10,17 @@
 }
 
 .imageUploadBox {
-    width: 850px;
+    width: 177vh;
     height: 573px;
-    border: 2px dashed #ccc;
+   /* border: 2px dashed #ccc;*/
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
     cursor: pointer;
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
 }
 
 .uploadLabel {
@@ -26,6 +32,7 @@
     color: #007BFF;
     font-size: 16px;
     text-align: center;
+    cursor: pointer;
 }
 
 .fileInput {
@@ -39,19 +46,24 @@
 }
 
 .additionalPhotos {
-    display: inline-grid;
-    gap: 10px; /* Add gap between additional photo boxes */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 10px;
+    width: 100%;
 }
 
 .additionalPhotoBox {
-    width: 400px;
-    height: 140px;
-    border: 2px dashed #ccc; /* Border for additional photos */
+  /*  width: 280px;*/
+    height: 280px;
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+    cursor: pointer;
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
 }
-/* styles.css */
 
 .breadcrumb {
     padding: 10px;
@@ -60,16 +72,26 @@
     font-size: 14px;
     margin-bottom: 13px;
 }
-.container{
-    background-color:#ECEDF3;
+
+.container {
+    background-color: #ECEDF3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
 }
+
 .leftContent {
     padding: 10px;
     color: black;
     font-size: 14px;
     margin-bottom: 13px;
-    width: 100%; /* Ensure full width */
-   /* max-width: 800px;  Example: Limit maximum width */
-    margin: 0 auto; /* Center horizontally */
+    width: 100%;
+    margin: 0 auto;
 }
 
+label {
+    display: block;
+    pointer-events: auto;
+}

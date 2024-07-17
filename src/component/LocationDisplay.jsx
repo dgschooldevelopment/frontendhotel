@@ -43,7 +43,7 @@ const LocationDisplay = ({ onLocationChange }) => {
 
   return (
     <div className="location-display">
-      <h2 className='spacelabel'> Location</h2>
+      <label  className='spacelabel'>Location</label>
       {currentLocation ? (
         <MapContainer center={[currentLocation.latitude, currentLocation.longitude]} zoom={13} scrollWheelZoom={true} style={{ height: '400px' }}>
           <TileLayer

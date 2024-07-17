@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faPlus } from '@fortawesome/free-solid-svg-icons';
 import '../css/Spaces.css';
 
 const Spaces = ({ hotelImages, updateSpace, addSpace, removeSpace }) => {
@@ -37,14 +37,6 @@ const Spaces = ({ hotelImages, updateSpace, addSpace, removeSpace }) => {
     updateSpace(index, 'image_data', null); // Clear the image data
   };
 
-  const handleCaptionChange = (index, value) => {
-    updateSpace(index, 'image_description.caption', value); // Update image caption
-  };
-
-  const handleLocationChange = (index, value) => {
-    updateSpace(index, 'image_description.location', value); // Update image location
-  };
-
   const handlePointChange = (index, pointIndex, value) => {
     updateSpace(index, `point${pointIndex}`, value); // Update point
   };
@@ -55,24 +47,34 @@ const Spaces = ({ hotelImages, updateSpace, addSpace, removeSpace }) => {
   };
 
   const removePoint = (index, pointIndex) => {
-    // Only remove the point if there are more than one points
-    const points = Object.keys(hotelImages[index]).filter(key => key.startsWith('point'));
-    if (points.length > 1) {
-      const updatedSpace = { ...hotelImages[index] };
+    updateSpace(index, (prevSpace) => {
+      // Create a copy of the previous space object
+      const updatedSpace = { ...prevSpace };
+
+      // Delete the targeted point property
       delete updatedSpace[`point${pointIndex}`];
-      updateSpace(index, updatedSpace); // Update space state with the modified space object
-    }
+
+      // Return the updated space object
+      return updatedSpace;
+    });
   };
 
   return (
     <div>
       <div className="spacelabel">
-        {/* Optional: Label for the Spaces section */}
         Space
       </div>
       <div className={`form-groupspace ${hotelImages.length > 2 ? 'scrollable' : ''}`}>
         {hotelImages.map((space, index) => (
           <div key={index} className="space-item">
+            <button
+              type="button"
+              className="remove-btn"
+              onClick={() => removeSpace(index)}
+              aria-label={`Remove space ${index + 1}`}
+            >
+              <FontAwesomeIcon icon={faTimes} />
+            </button>
             <div className="form-group">
               <input
                 type="file"
@@ -88,7 +90,11 @@ const Spaces = ({ hotelImages, updateSpace, addSpace, removeSpace }) => {
                 {space.image_data ? (
                   <div className="image-preview">
                     <img src={space.image_data} alt={`Space ${index + 1}`} />
-                    <button type="button" onClick={() => handleRemoveImage(index)}>
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveImage(index)}
+                      aria-label={`Remove image from space ${index + 1}`}
+                    >
                       <FontAwesomeIcon icon={faTimes} />
                     </button>
                   </div>
@@ -98,24 +104,25 @@ const Spaces = ({ hotelImages, updateSpace, addSpace, removeSpace }) => {
               </div>
             </div>
             <div className="space-details">
-             
+              <label className='addpoint'>Add details to your hotel rooms...</label>
               <ul>
                 {Object.keys(space)
                   .filter(key => key.startsWith('point'))
-                  .map((key) => (
+                  .map((key, pointIndex) => (
                     <li key={key} className="point-item">
                       <div className="input-with-icon">
                         <input
                           type="text"
                           className="form-control point-input"
-                          placeholder={`Point ${key.slice(5)}`}
+                          placeholder={`Point ${pointIndex + 1}`}
                           value={space[key] || ''}
-                          onChange={(e) => handlePointChange(index, parseInt(key.slice(5)), e.target.value)}
+                          onChange={(e) => handlePointChange(index, pointIndex + 1, e.target.value)}
                         />
                         <button
                           type="button"
                           className="remove-point-btn remove-btn"
-                          onClick={() => removePoint(index, parseInt(key.slice(5)))}
+                          onClick={() => removePoint(index, pointIndex + 1)}
+                          aria-label={`Remove point ${pointIndex + 1} from space ${index + 1}`}
                         >
                           <FontAwesomeIcon icon={faTimes} />
                         </button>
@@ -123,20 +130,27 @@ const Spaces = ({ hotelImages, updateSpace, addSpace, removeSpace }) => {
                     </li>
                   ))}
               </ul>
-              <button type="button" className="add-point-btn" onClick={() => addPoint(index)}>Add Point</button>
-            </div>
-            {hotelImages.length > 1 && (
-              <button type="button" className="remove-btn" onClick={() => removeSpace(index)}>
-                Remove
+              <button
+                type="button"
+                className="add-point-btn"
+                onClick={() => addPoint(index)}
+                aria-label={`Add point to space ${index + 1}`}
+              >
+                Add Point
               </button>
-            )}
+            </div>
           </div>
         ))}
-      </div>
-      <div className="add-space-btn-container">
-        <button type="button" className="add-space-btn" onClick={addSpace}>
-          Add Space
-        </button>
+        <div className="add-space-btn-container">
+          <button
+            type="button"
+            className="add-space-btn"
+            onClick={addSpace}
+            aria-label="Add new space"
+          >
+            <FontAwesomeIcon icon={faPlus} />
+          </button>
+        </div>
       </div>
     </div>
   );

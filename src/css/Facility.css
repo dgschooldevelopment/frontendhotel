@@ -1,5 +1,3 @@
-/* Facility.css */
-
 .form-group {
   margin-bottom: 20px;
 }
@@ -10,7 +8,7 @@
   margin-bottom: 10px;
   display: block;
   color: black;
-  margin-left: -24rem;
+  margin-left: -24rem; /* Adjust as needed */
 }
 
 .facility-row {
@@ -37,8 +35,8 @@
 }
 
 .form-check1.selected {
-  border-color: #795548 !important;
-  background-color: #eaebeb17;
+  border-color: #007bff; /* Selected border color */
+  background-color: #eaebeb; /* Selected background color */
 }
 
 .form-check1:hover {
@@ -46,49 +44,19 @@
 }
 
 .form-check1.selected .facility-icon {
-  color: #070707; /* Color when selected */
+  color: #007bff; /* Color when selected */
 }
 
-.form-check1.selected .facility-icon-container {
-  color: #8467d1; /* Color when selected */
-}
-
-.custom-facility {
-  margin-top: 10px;
-  display: flex;
-  align-items: center;
-}
-
-.custom-facility input[type="text"] {
-  flex: 1;
-  margin-right: 10px;
-}
-
-.custom-facility button {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  padding: 8px 15px;
-  border-radius: 4px;
-}
-
-.custom-facility button:hover {
-  background-color: #0056b3;
-}
-
-.facilityname{
+.facilityname {
   font-size: 16px;
-
   margin-bottom: 10px;
   display: block;
   color: black;
-  
-}.facility-icon {
-  color: #555;
+}
+
+.facility-icon {
+  color: #1d1c1c;
   font-size: 24px;
 }
 
-.form-check1.selected .facility-icon {
-  color:#007bff; /* New color when selected */
-}
+/* Adju

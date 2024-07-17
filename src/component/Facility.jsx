@@ -1,20 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCar, faDumbbell, faHotTub } from '@fortawesome/free-solid-svg-icons';
 import '../css/Facility.css';
 
-const Facility = () => {
-  const [facilities, setFacilities] = useState({
-    parking: false,
-    gym: false,
-    spa: false,
-    // Add more facilities as needed
-  });
-
-  const handleFacilityChange = (facilityName) => {
-    setFacilities({
+const Facility = ({ facilities, handleFacilityChange }) => {
+  const toggleAmenity = (name) => {
+    handleFacilityChange({
       ...facilities,
-      [facilityName]: !facilities[facilityName]
+      [name]: !facilities[name], // Toggle the value of the clicked facility
     });
   };
 
@@ -24,7 +17,7 @@ const Facility = () => {
       <div className="facility-row">
         <div
           className={`form-check1 ${facilities.parking ? 'selected' : ''}`}
-          onClick={() => handleFacilityChange('parking')}
+          onClick={() => toggleAmenity('parking')}
         >
           <div className="facility-icon-container">
             <FontAwesomeIcon icon={faCar} className="facility-icon" />
@@ -33,7 +26,7 @@ const Facility = () => {
         </div>
         <div
           className={`form-check1 ${facilities.gym ? 'selected' : ''}`}
-          onClick={() => handleFacilityChange('gym')}
+          onClick={() => toggleAmenity('gym')}
         >
           <div className="facility-icon-container">
             <FontAwesomeIcon icon={faDumbbell} className="facility-icon" />
@@ -42,7 +35,7 @@ const Facility = () => {
         </div>
         <div
           className={`form-check1 ${facilities.spa ? 'selected' : ''}`}
-          onClick={() => handleFacilityChange('spa')}
+          onClick={() => toggleAmenity('spa')}
         >
           <div className="facility-icon-container">
             <FontAwesomeIcon icon={faHotTub} className="facility-icon" />

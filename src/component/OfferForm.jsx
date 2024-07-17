@@ -31,16 +31,9 @@ const OfferForm = ({ offers, updateOffer, addOffer }) => {
       <button type="button" >
         Add Offer
       </button></div>
+   
     </div></div>
-    <div className='aboutus'>
-      <h3>Add About your villas</h3>
-      
-        <textarea
-          className="form-control"
-          rows="5" cols='67'
-          placeholder="Enter information about your company or service..."
-        ></textarea>
-      </div>
+    <hr></hr>
     </div>
   );
 };
