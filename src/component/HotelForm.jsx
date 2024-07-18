@@ -202,6 +202,43 @@ function HotelForm() {
   };
   
   
+  const updateMeal = (index, key, value) => {
+    const updatedMeals = [...villaData.meals];
+    updatedMeals[index] = {
+      ...updatedMeals[index],
+      [key]: value,
+    };
+    setVillaData((prevState) => ({
+      ...prevState,
+      meals: updatedMeals,
+    }));
+  };
+
+  // Function to add a new meal
+  const addMeal = () => {
+    setVillaData((prevState) => ({
+      ...prevState,
+      meals: [
+        ...prevState.meals,
+        {
+          image_data: '',
+          description: '',
+        },
+      ],
+    }));
+  };
+
+  // Function to remove a meal
+  const removeMeal = (index) => {
+    const updatedMeals = [...villaData.meals];
+    updatedMeals.splice(index, 1);
+    setVillaData((prevState) => ({
+      ...prevState,
+      meals: updatedMeals,
+    }));
+  };
+  
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log('Villa data:', villaData);
@@ -222,7 +259,7 @@ function HotelForm() {
       offers: villaData.offers,
       meals: villaData.meals.map((meal) => ({
      
-        meal_description: meal.description,
+      description: meal.description,
         image_data: meal.image_data,
       })),
       hotel_images: villaData.hotel_images.filter((image) => image !== null).map((image) => ({
@@ -375,37 +412,9 @@ function HotelForm() {
       {/* MealInput Component */}
       <MealInput
         meals={villaData.meals}
-        updateMeal={(index, key, value) => {
-          const updatedMeals = [...villaData.meals];
-          updatedMeals[index] = {
-            ...updatedMeals[index],
-            [key]: value,
-          };
-          setVillaData((prevState) => ({
-            ...prevState,
-            meals: updatedMeals,
-          }));
-        }}
-        addMeal={() => {
-          setVillaData((prevState) => ({
-            ...prevState,
-            meals: [
-              ...prevState.meals,
-              {
-                image_data: '',
-               description: '',
-              },
-            ],
-          }));
-        }}
-        removeMeal={(index) => {
-          const updatedMeals = [...villaData.meals];
-          updatedMeals.splice(index, 1);
-          setVillaData((prevState) => ({
-            ...prevState,
-            meals: updatedMeals,
-          }));
-        }}
+        updateMeal={updateMeal}
+        addMeal={addMeal}
+        removeMeal={removeMeal}
       />
 
       {/* LocationDisplay Component */}
