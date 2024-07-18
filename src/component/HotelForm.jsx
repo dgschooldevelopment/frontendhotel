@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons'; // Importing close icon
-import '../css/MealInput.css';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import '../css/HotelForm.css';
 import Amenities from './Amenities';
 import PriceBasedRooms from './PriceBasedRooms';
 import OfferForm from './OfferForm';
@@ -11,7 +11,7 @@ import LocationDisplay from './LocationDisplay';
 import PolicyRulesForm from './PolicyRulesForm';
 import Faq from './Faq';
 import AddPhoto from './AddPhoto';
-import MealInput from './MealInput'; // Import MealInput component
+import MealInput from './MealInput';
 
 function HotelForm() {
   const initialAmenitiesState = {
@@ -22,16 +22,17 @@ function HotelForm() {
     wifi: false,
     // Add more amenities as needed
   };
+
   const initialfacilitiesState = {
     parking: false,
     gym: false,
     spa: false,
-    // Add more amenities as needed
+    // Add more facilities as needed
   };
 
   const [villaData, setVillaData] = useState({
     name: '',
-    maxGuests: '', // Add maxGuests to state
+    maxGuests: '', 
     minGuests: '', 
     total_no_of_rooms: '',
     location: '',
@@ -41,11 +42,11 @@ function HotelForm() {
     facilities: initialfacilitiesState,
     FAQ: [{ question: '', answer: '' }],
     home_rules_and_truths: [],
-    meals: [], // Initialize meals as an empty array
-    hotel_images: [], // Initialize hotel_images as an empty array
-    front_images: [null, null, null], // Initialize front_images as an empty array
+    meals: [], 
+    hotel_images: [], 
+    front_images: [null, null, null], 
     latitude: '',
-    longitude: ''
+    longitude: '',
   });
 
   const [priceRooms, setPriceRooms] = useState([]);
@@ -59,19 +60,16 @@ function HotelForm() {
 
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
-  
-    // Ensure that specific fields like maxGuests, minGuests, or other relevant fields do not accept negative values
     let sanitizedValue = value;
     if (name === 'maxGuests' || name === 'minGuests') {
-      sanitizedValue = Math.max(0, parseInt(value, 10)); // Ensure the value is non-negative
+      sanitizedValue = Math.max(0, parseInt(value, 10));
     }
-  
     setVillaData((prevState) => ({
       ...prevState,
       [name]: type === 'checkbox' ? checked : sanitizedValue,
     }));
   };
-  
+
   const handleAmenityChange = (newAmenities) => {
     setVillaData((prevState) => ({
       ...prevState,
@@ -105,15 +103,15 @@ function HotelForm() {
   const addSpace = () => {
     setVillaData((prevState) => ({
       ...prevState,
-      hotel_images: [...prevState.hotel_images, { image_description: '', image: '', image_url: '' }],
+      hotel_images: [...prevState.hotel_images, { image_url: '', image_description: { caption: '', location: '' } }],
     }));
   };
 
-  const updateSpace = (index, name, value) => {
+  const updateSpace = (index, key, value) => {
     setVillaData((prevState) => ({
       ...prevState,
       hotel_images: prevState.hotel_images.map((space, i) =>
-        i === index ? { ...space, [name]: value } : space
+        i === index ? { ...space, [key]: value } : space
       ),
     }));
   };
@@ -121,7 +119,7 @@ function HotelForm() {
   const removeSpace = (index) => {
     setVillaData((prevState) => ({
       ...prevState,
-      hotel_images: prevState.hotel_images.filter((space, i) => i !== index),
+      hotel_images: prevState.hotel_images.filter((_, i) => i !== index),
     }));
   };
 
@@ -200,50 +198,36 @@ function HotelForm() {
       FAQ: newFaqs,
     }));
   };
-  
-  
+
   const updateMeal = (index, key, value) => {
-    const updatedMeals = [...villaData.meals];
-    updatedMeals[index] = {
-      ...updatedMeals[index],
-      [key]: value,
-    };
-    setVillaData((prevState) => ({
-      ...prevState,
-      meals: updatedMeals,
-    }));
+    setVillaData((prevState) => {
+      const updatedMeals = [...prevState.meals];
+      updatedMeals[index] = {
+        ...updatedMeals[index],
+        [key]: value,
+      };
+      return { ...prevState, meals: updatedMeals };
+    });
   };
 
-  // Function to add a new meal
   const addMeal = () => {
     setVillaData((prevState) => ({
       ...prevState,
-      meals: [
-        ...prevState.meals,
-        {
-          image_data: '',
-          description: '',
-        },
-      ],
+      meals: [...prevState.meals, { description: '', image_data: '' }],
     }));
   };
 
-  // Function to remove a meal
   const removeMeal = (index) => {
-    const updatedMeals = [...villaData.meals];
-    updatedMeals.splice(index, 1);
-    setVillaData((prevState) => ({
-      ...prevState,
-      meals: updatedMeals,
-    }));
+    setVillaData((prevState) => {
+      const updatedMeals = prevState.meals.filter((_, i) => i !== index);
+      return { ...prevState, meals: updatedMeals };
+    });
   };
-  
-  
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log('Villa data:', villaData);
 
-    const total_no_of_guests = [villaData.minGuests, villaData.maxGuests];
     const transformedData = {
       name: villaData.name,
       total_no_of_guests: [villaData.minGuests, villaData.maxGuests],
@@ -258,14 +242,12 @@ function HotelForm() {
       home_rules_and_truths: villaData.home_rules_and_truths,
       offers: villaData.offers,
       meals: villaData.meals.map((meal) => ({
-     
-      description: meal.description,
+        description: meal.description,
         image_data: meal.image_data,
       })),
       hotel_images: villaData.hotel_images.filter((image) => image !== null).map((image) => ({
-        image_url: image.image_url,
-        image_description: image.image_description,
-        image_data: image.image_data
+           image_description: image.image_description,
+        image: image.image,
       })),
       front_images: villaData.front_images.filter((image) => image !== null).map((image) => ({
         image_url: image.image_url,
@@ -293,6 +275,8 @@ function HotelForm() {
     }
   };
 
+  
+  
   return (
     <form onSubmit={handleSubmit}>
       <div className="">
@@ -410,12 +394,8 @@ function HotelForm() {
       />
 
       {/* MealInput Component */}
-      <MealInput
-        meals={villaData.meals}
-        updateMeal={updateMeal}
-        addMeal={addMeal}
-        removeMeal={removeMeal}
-      />
+      <MealInput meals={villaData.meals} addMeal={addMeal} removeMeal={removeMeal} updateMeal={updateMeal} /> {/* Add MealInput component */}
+    
 
       {/* LocationDisplay Component */}
       <LocationDisplay location={villaData.location} latitude={villaData.latitude} longitude={villaData.longitude} />

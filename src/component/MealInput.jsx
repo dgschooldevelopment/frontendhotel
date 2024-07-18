@@ -1,13 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons'; // Importing close icon
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import '../css/MealInput.css';
 
 const MealInput = ({ meals, updateMeal, addMeal, removeMeal }) => {
   const fileInputRefs = useRef([]);
 
   useEffect(() => {
-    // Initialize with one default meal space if meals array is empty
     if (meals.length === 0) {
       addMeal();
     }
@@ -18,32 +17,31 @@ const MealInput = ({ meals, updateMeal, addMeal, removeMeal }) => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        const base64Data = reader.result.split(',')[1]; // Extract base64 part after comma
-        updateMeal(index, 'photoPreview', reader.result); // Update meal state with preview URL
-        // Avoid updating 'image_data' here to prevent storing base64 in 'image_data'
+        const base64Data = reader.result.split(',')[1];
+        updateMeal(index, 'photoPreview', reader.result);
+        updateMeal(index, 'image_data', base64Data);
       };
-      reader.readAsDataURL(file); // Read file as data URL (base64)
+      reader.readAsDataURL(file);
     }
   };
-  
 
   const handleChange = (event, index) => {
     const { name, value } = event.target;
-    updateMeal(index, name, value); // Update meal details
+    updateMeal(index, name, value);
   };
 
   const handleRemoveMeal = (index) => {
-    removeMeal(index); // Remove meal
+    removeMeal(index);
   };
 
   const handleAddMeal = () => {
-    addMeal(); // Add new meal
+    addMeal();
   };
 
   return (
     <div className="meal-input-container">
       {meals.map((meal, index) => (
-        <div key={index}>
+        <div key={index} className="meal-input-wrapper">
           <div className="form-group">
             <label className='spacelabel'>Meal Image or Video</label>
             <div className="meal-input">
@@ -51,21 +49,24 @@ const MealInput = ({ meals, updateMeal, addMeal, removeMeal }) => {
                 type="file"
                 className="form-control-file"
                 style={{ display: 'none' }}
-                ref={(el) => (fileInputRefs.current[index] = el)} // Ref for file input
-                onChange={(e) => handleFileChange(index, e)} // Handle file change for the input
+                ref={(el) => (fileInputRefs.current[index] = el)}
+                onChange={(e) => handleFileChange(index, e)}
               />
               <div
                 className="image-placeholder_meal"
-                onClick={() => fileInputRefs.current[index].click()} // Trigger file input click
+                onClick={() => fileInputRefs.current[index].click()}
               >
                 {meal.photoPreview ? (
                   <div className="image-preview">
                     <img src={meal.photoPreview} alt="Meal Preview" />
                     <button
                       type="button"
-                      onClick={() => updateMeal(index, { image_data: '', photoPreview: '' })}
+                      onClick={() => {
+                        updateMeal(index, 'photoPreview', '');
+                        updateMeal(index, 'image_data', '');
+                      }}
                     >
-                      <FontAwesomeIcon icon={faTimes} /> {/* Using close icon */}
+                      <FontAwesomeIcon icon={faTimes} />
                     </button>
                   </div>
                 ) : (
@@ -74,19 +75,18 @@ const MealInput = ({ meals, updateMeal, addMeal, removeMeal }) => {
               </div>
               <textarea
                 className="form-control"
-                name="meal_description"
+                name="description"
                 rows="3"
                 placeholder="Meal Description"
                 value={meal.description || ''}
-                onChange={(e) => handleChange(e, index)} // Handle changes in meal details
-                style={{ width: '80%' }} // Use double curly braces for inline styles in React
+                onChange={(e) => handleChange(e, index)}
+                style={{ width: '80%' }}
               />
-
               {index > 0 && (
                 <button
                   type="button"
                   className="btn btn-danger"
-                  onClick={() => handleRemoveMeal(index)} // Remove meal button click handler
+                  onClick={() => handleRemoveMeal(index)}
                 >
                   Remove Meal
                 </button>
@@ -95,11 +95,10 @@ const MealInput = ({ meals, updateMeal, addMeal, removeMeal }) => {
           </div>
         </div>
       ))}
-
       <button
         type="button"
         className="btn btn-primary"
-        onClick={handleAddMeal} // Add meal button click handler
+        onClick={handleAddMeal}
       >
         Add Meal
       </button>

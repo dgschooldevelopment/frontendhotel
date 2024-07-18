@@ -9,8 +9,8 @@ const Spaces = ({ hotelImages, updateSpace, addSpace, removeSpace }) => {
   useEffect(() => {
     // Ensure each space has at least one point by default
     hotelImages.forEach((_, index) => {
-      if (Object.keys(hotelImages[index]).filter(key => key.startsWith('point')).length === 0) {
-        updateSpace(index, 'point1', ''); // Add default point
+      if (Object.keys(hotelImages[index].image_description).filter(key => key.startsWith('point')).length === 0) {
+        updateSpace(index, 'image_description', { ...hotelImages[index].image_description, point1: '' });
       }
     });
   }, [hotelImages, updateSpace]);
@@ -27,35 +27,36 @@ const Spaces = ({ hotelImages, updateSpace, addSpace, removeSpace }) => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        updateSpace(index, 'image_data', reader.result); // Save base64 encoded image data
+        updateSpace(index, 'image', reader.result); // Save base64 encoded image data
       };
       reader.readAsDataURL(file);
     }
   };
 
   const handleRemoveImage = (index) => {
-    updateSpace(index, 'image_data', null); // Clear the image data
+    updateSpace(index, 'image', null); // Clear the image data
   };
 
   const handlePointChange = (index, pointIndex, value) => {
-    updateSpace(index, `point${pointIndex}`, value); // Update point
+    updateSpace(index, 'image_description', {
+      ...hotelImages[index].image_description,
+      [`point${pointIndex}`]: value,
+    }); // Update point
   };
 
   const addPoint = (index) => {
-    const nextPointIndex = Object.keys(hotelImages[index]).filter(key => key.startsWith('point')).length + 1;
-    updateSpace(index, `point${nextPointIndex}`, ''); // Initialize new point with empty string
+    const nextPointIndex = Object.keys(hotelImages[index].image_description).filter(key => key.startsWith('point')).length + 1;
+    updateSpace(index, 'image_description', {
+      ...hotelImages[index].image_description,
+      [`point${nextPointIndex}`]: '',
+    }); // Initialize new point with an empty string
   };
 
   const removePoint = (index, pointIndex) => {
-    updateSpace(index, (prevSpace) => {
-      // Create a copy of the previous space object
-      const updatedSpace = { ...prevSpace };
-
-      // Delete the targeted point property
-      delete updatedSpace[`point${pointIndex}`];
-
-      // Return the updated space object
-      return updatedSpace;
+    updateSpace(index, 'image_description', (prevDesc) => {
+      const updatedDesc = { ...prevDesc };
+      delete updatedDesc[`point${pointIndex}`];
+      return updatedDesc;
     });
   };
 
@@ -87,9 +88,9 @@ const Spaces = ({ hotelImages, updateSpace, addSpace, removeSpace }) => {
                 className="image-placeholder"
                 onClick={() => fileInputRefs.current[index].click()}
               >
-                {space.image_data ? (
+                {space.image ? (
                   <div className="image-preview">
-                    <img src={space.image_data} alt={`Space ${index + 1}`} />
+                    <img src={space.image} alt={`Space ${index + 1}`} />
                     <button
                       type="button"
                       onClick={() => handleRemoveImage(index)}
@@ -106,7 +107,7 @@ const Spaces = ({ hotelImages, updateSpace, addSpace, removeSpace }) => {
             <div className="space-details">
               <label className='addpoint'>Add details to your hotel rooms...</label>
               <ul>
-                {Object.keys(space)
+                {Object.keys(space.image_description)
                   .filter(key => key.startsWith('point'))
                   .map((key, pointIndex) => (
                     <li key={key} className="point-item">
@@ -115,7 +116,7 @@ const Spaces = ({ hotelImages, updateSpace, addSpace, removeSpace }) => {
                           type="text"
                           className="form-control point-input"
                           placeholder={`Point ${pointIndex + 1}`}
-                          value={space[key] || ''}
+                          value={space.image_description[key] || ''}
                           onChange={(e) => handlePointChange(index, pointIndex + 1, e.target.value)}
                         />
                         <button
