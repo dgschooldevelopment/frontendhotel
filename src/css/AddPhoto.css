@@ -1,4 +1,103 @@
+
+
 /* styles.css */
+
+/* General styles */
+.imageUploader {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+}
+
+.imageUploadBox {
+    width: 177vh;
+    height: 573px;
+   /* border: 2px dashed #ccc;*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    cursor: pointer;
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.uploadLabel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    color: #007BFF;
+    font-size: 16px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.fileInput {
+    display: none;
+}
+
+.uploadedImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.additionalPhotos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 10px;
+    width: 100%;
+}
+
+.additionalPhotoBox {
+  /*  width: 280px;*/
+    height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    cursor: pointer;
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.breadcrumb {
+    padding: 10px;
+    display: table-cell;
+    color: black;
+    font-size: 14px;
+    margin-bottom: 13px;
+}
+
+.container {
+    background-color: #ECEDF3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.leftContent {
+    padding: 10px;
+    color: black;
+    font-size: 14px;
+    margin-bottom: 13px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+label {
+    display: block;
+    pointer-events: auto;
+}
+///////////////////////////////* styles.css */
 
 /* General styles */
 .imageUploader {
